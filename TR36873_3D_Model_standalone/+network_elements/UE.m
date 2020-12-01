@@ -21,7 +21,7 @@ classdef UE < handle
     % is_LOS                                    ... boolean type: 1-LOS; 0-NLOS
     % is_indoor                                 ... boolean type: 1-indoor; 0-outdoor
     % dist_indoor                               ... distance indoor in [m]
-    % direction                                 ... user pointing direction in [°]
+    % direction                                 ... user pointing direction in [ï¿½]
     % H_0_channel_trace                         ... channel impulse response of the desired link -the output from TR 36.873 eq(7.21/7.26)
     % sampled_channel_H_0                       ... sampled channel impulse response of the desired link
     % H_0_final                                 ... the channel transfer function of the desired link (after FFT of the sampled version)
@@ -54,11 +54,13 @@ classdef UE < handle
         direction
         H_0_channel_trace 
         sampled_channel_H_0
-         H_0_final
+        H_0_final
+        beta_0
         H_i_channel_trace
         sampled_channel_H_i 
         H_i_after_fft 
         H_i_full_final
+        beta_i
         TTI_of_smallscale_fading_recalculation
         TTI_of_smallscale_fading_recalculation_i
         recalculate_3D_smallscale_fading

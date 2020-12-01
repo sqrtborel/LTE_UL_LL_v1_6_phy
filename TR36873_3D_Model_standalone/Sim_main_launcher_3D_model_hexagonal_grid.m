@@ -22,24 +22,25 @@ config.parallel_network = false;
 
 
 % Basic settings
+config.generate_uplink      = true;
 config.frequency            = 2e9;
 config.wavelength           = 299792458/config.frequency;
 config.debug_level          = 1;
 config.bandwidth            = 10e6; 
 config.BF_length            = 1e-3;   % Denotes the Block Fading length: e.g. For system level the TTI length of 1e-3; For link level the symbol length 1e-3/14
-config.show_network_plots   = true;
+config.show_network_plots   = false;
 config.CP_length            = 'normal';
 
 % User and eNodeB settings
-config.UE_per_eNodeB             = 3;
+config.UE_per_eNodeB             = 5;
 config.UE_speed                  = 50/3.6; % m/s
 config.eNodeB_tx_power           = 40;
-config.eNodeB_nTX                = 4;
+config.eNodeB_nTX                = 32;
 config.UE_nRX                    = 2;
 config.UE.thermal_noise_density  = -174;
 config.UE.receiver_noise_figure  = 9;
-config.min_floor_number          = 4; % number of floors in buildings
-config.max_floor_number          = 8; % number of floors in buildings
+config.min_floor_number          = 1; % number of floors in buildings
+config.max_floor_number          = 1; % number of floors in buildings
 config.indoor_UE_fraction        = 0.8; % fraction of indoor users
 
 % Small- and large scale fading
@@ -57,7 +58,7 @@ config.parallel_toolbox_installed                      =[];%Added
 
 % Network geometry
 config.nr_eNodeB_rings                                 = 1;
-config.nr_sectors                                      = 1;
+config.nr_sectors                                      = 3;
 config.min_UE_eNodeB_distance                          = 35;     % in [m];   3D_UMa_fading: 35[m]; 3D_UMi_fading: 10[m]; 
 config.inter_eNodeB_distance                           = 500;    % in [m];   3D_UMa_fading: 500[m]; 3D_UMi_fading: 200[m];
 config.antenna_azimuth_offsett                         = 60;     % % in [deg];  The boresight direction of the eNodeB; This is a desired parameter, three-sector eNodeBs assumed 
@@ -66,14 +67,14 @@ config.tx_height                                       = 25;     % in [m];   3D_
 config.rx_height                                       = 1.5;
 
 % UE antenna parameters
-config.UE_antenna_polarization                       = 'ULA';
-config.UE_antenna_slant_angle                        = 0;     % if ULA --> slant angle is 0deg; if 'XPOL' --> slant_angle is 90deg
+config.UE_antenna_polarization                       = 'XPOL';
+config.UE_antenna_slant_angle                        = 90;     % if ULA --> slant angle is 0deg; if 'XPOL' --> slant_angle is 90deg
 config.UE_antenna_element_horizontal_spacing         = 0.5 * config.wavelength;
 
 % eNodeB antenna parameters
 config.antenna.antenna_gain_pattern                  = 'TR36.873 3D antenna';
-config.antenna.antenna_polarization                  = 'ULA'; % 'XPOL' or 'COPOL'.
-config.antenna.slant_angle                           = 0; % If 'COPOL' --> slant_angle is 0deg, 'XPOL' --> slant_angle is 45deg
+config.antenna.antenna_polarization                  = 'XPOL'; % 'XPOL' or 'COPOL'.
+config.antenna.slant_angle                           = 45; % If 'COPOL' --> slant_angle is 0deg, 'XPOL' --> slant_angle is 45deg
 config.antenna_element_vertical_spacing              = 0.5 * config.wavelength;     % 0.8*wavelength % 
 config.antenna_element_horizontal_spacing            = 0.5 * config.wavelength;   % 0.5*wavelength can also be 0.8*wavelength
 config.nr_of_antenna_elements_in_each_column         = 10;
@@ -86,7 +87,7 @@ config.antenna.max_antenna_gain                      = 8; % As defined in TR 36.
 % parameters for the FFT of the channel impulse response
 config = load_specific_params(config);
 
-config.simulation_time_blocks                        = 50;           % Design parameter: the simulation length as multiple of Block Fading length (config.BF_length)
+config.simulation_time_blocks                        = 1;           % Design parameter: the simulation length as multiple of Block Fading length (config.BF_length)
 config.results_folder                                = './results';
 config.results_file                                  = 'auto';       % NOTE: 'auto' assigns a filename automatically
 
@@ -94,7 +95,7 @@ config.results_file                                  = 'auto';       % NOTE: 'au
 % Generate a hexagonal grid of eNodeB sites
 fprintf('Generating eNodeB positions');
 eNodeB_site_positions = network_geometry.hexagonal_eNodeB_grid(config);
-if config.nr_eNodeB_rings == 0;
+if config.nr_eNodeB_rings == 0
     roi_x = [-config.inter_eNodeB_distance,config.inter_eNodeB_distance];
     roi_y = [-config.inter_eNodeB_distance,config.inter_eNodeB_distance];
 else
@@ -102,7 +103,7 @@ else
     tx_pos = eNodeB_site_positions;
     roi_x = [min(tx_pos(:,1)),max(tx_pos(:,1))];
     roi_y = [min(tx_pos(:,2)),max(tx_pos(:,2))];
-     roi_x = roi_x + ROI_increase_factor*abs(roi_x(2)-roi_x(1))*[-1,1];
+    roi_x = roi_x + ROI_increase_factor*abs(roi_x(2)-roi_x(1))*[-1,1];
     roi_y = roi_y + ROI_increase_factor*abs(roi_y(2)-roi_y(1))*[-1,1];
 %     roi_x = roi_x + ROI_increase_factor*abs(roi_x(2)-roi_x(1))*[-1,1];
 %     roi_y = roi_y + ROI_increase_factor*abs(roi_y(2)-roi_y(1))*[-1,1];
@@ -452,7 +453,7 @@ while networkClock.current_block < config.simulation_time_blocks
                     UE_pos_pixel                          = LTE_common_pos_to_pixel(UE_positions(jj,:), [networkPathlossMap.roi_x(1), networkPathlossMap.roi_y(1)], data_res);
                     eNodeBs(bb).attached_UEs_vector(jj).is_LOS(1)    = networkPathlossMap.LOS_map(UE_pos_pixel(2),UE_pos_pixel(1), eNodeBs(bb).parent_eNodeB.id);
                     eNodeBs(bb).attached_UEs_vector(jj).rx_height = networkPathlossMap.UE_height_map(UE_pos_pixel(2),UE_pos_pixel(1));
-                    eNodeBs(bb).attached_UEs_vector(jj).is_indoor = networkPathlossMap.UE_indoor_map(UE_pos_pixel(2),UE_pos_pixel(1));
+                    eNodeBs(bb).attached_UEs_vector(jj).is_indoor = false;%networkPathlossMap.UE_indoor_map(UE_pos_pixel(2),UE_pos_pixel(1));
                     eNodeBs(bb).attached_UEs_vector(jj).dist_indoor = networkPathlossMap.UE_indoor_distance_map(UE_pos_pixel(2),UE_pos_pixel(1));
                     eNodeBs(bb).attached_UEs_vector(jj).recalculate_3D_smallscale_fading = true; % In case the large scale parameters have changed, the fast scale fading is recalculated.
                     if ~isempty(eNodeBs(bb).neighbors_eNodeB)
@@ -626,7 +627,10 @@ while networkClock.current_block < config.simulation_time_blocks
 
                 % Here goes the channel matrix after FFT with size [nRx nTx 1 nTTI nRB]
                 H_0_after_fft = eNodeBs(bb).attached_UEs_vector(uu).channels.get_RB_trace(eNodeBs(bb).attached_UEs_vector(uu).sampled_channel_H_0);
-                eNodeBs(bb).attached_UEs_vector(uu).H_0_final = H_0_after_fft./ sqrt(pathloss_linear_0.*eNodeBs(bb).attached_UEs_vector(uu).all_large_scale_params(1,1));
+                eNodeBs(bb).attached_UEs_vector(uu).beta_0 = 1/sqrt(pathloss_linear_0);
+%                 eNodeBs(bb).attached_UEs_vector(uu).beta_0 = 1/sqrt(pathloss_linear_0.*eNodeBs(bb).attached_UEs_vector(uu).all_large_scale_params(1,1));
+                eNodeBs(bb).attached_UEs_vector(uu).H_0_final = H_0_after_fft.* eNodeBs(bb).attached_UEs_vector(uu).beta_0;
+               
             end
             H_0 = permute(eNodeBs(bb).attached_UEs_vector(uu).H_0_final(:,:,:,networkClock.current_block-eNodeBs(bb).attached_UEs_vector(uu).TTI_of_smallscale_fading_recalculation+1,:),[1,2,5,4,3]); % final H_0 with size [nRx nTx nRB nTTI]
             
@@ -634,7 +638,7 @@ while networkClock.current_block < config.simulation_time_blocks
             for kk = 1:length(eNodeBs(bb).neighbors_eNodeB)     % indicates the interfering eNodeB index
                 if eNodeBs(bb).attached_UEs_vector(uu).recalculate_3D_smallscale_fading_i(kk)
                     eNodeBs(bb).attached_UEs_vector(uu).sampled_channel_H_i = zeros(eNodeBs(bb).attached_UEs_vector(uu).nRX, eNodeBs(bb).neighbors_eNodeB(kk).nTX, 1, config.simulation_time_blocks-networkClock.current_block+1, 200);
-                    eNodeBs(bb).attached_UEs_vector(uu).H_i_after_fft = zeros(eNodeBs(bb).attached_UEs_vector(uu).nRX, eNodeBs(bb).neighbors_eNodeB(kk).nTX, 1, config.simulation_time_blocks-networkClock.current_block+1, 2*config.N_RB , length(eNodeBs(bb).neighbors_eNodeB));
+                    eNodeBs(bb).attached_UEs_vector(uu).H_i_after_fft = zeros(eNodeBs(bb).attached_UEs_vector(uu).nRX, eNodeBs(bb).neighbors_eNodeB(kk).nTX, 1, config.simulation_time_blocks-networkClock.current_block+1, 24 , length(eNodeBs(bb).neighbors_eNodeB));
                     % preallocate memory
                     if networkClock.current_block == 1
                         if kk ~= 1
@@ -679,7 +683,10 @@ while networkClock.current_block < config.simulation_time_blocks
 
 %                     pathloss_linear_i = networkPathlossMap.pathloss(eNodeBs(bb).attached_UEs_vector(uu).pos_pixel(1,1),eNodeBs(bb).attached_UEs_vector(uu).pos_pixel(1,2),eNodeBs(bb).neighbors_eNodeB(kk).eNodeB_id); 
                     % apply path-loss and shadow fading
-                    eNodeBs(bb).attached_UEs_vector(uu).H_i_full_final(:,:,:,:,:,kk) = eNodeBs(bb).attached_UEs_vector(uu).H_i_after_fft(:,:,:,:,:,kk)./ sqrt(pathloss_linear_i*eNodeBs(bb).attached_UEs_vector(uu).all_large_scale_params(kk+1,1));
+                    eNodeBs(bb).attached_UEs_vector(uu).beta_i(kk) = 1/sqrt(pathloss_linear_i);
+%                     eNodeBs(bb).attached_UEs_vector(uu).beta_i(kk) = 1/sqrt(pathloss_linear_i*eNodeBs(bb).attached_UEs_vector(uu).all_large_scale_params(kk+1,1));
+                    eNodeBs(bb).attached_UEs_vector(uu).H_i_full_final(:,:,:,:,:,kk) = eNodeBs(bb).attached_UEs_vector(uu).H_i_after_fft(:,:,:,:,:,kk).* eNodeBs(bb).attached_UEs_vector(uu).beta_i(kk);
+                    
                 end
                 fprintf('%d ', kk+1);
                 H_i_current_block = eNodeBs(bb).attached_UEs_vector(uu).H_i_full_final(:,:,:,networkClock.current_block-eNodeBs(bb).attached_UEs_vector(uu).TTI_of_smallscale_fading_recalculation_i(kk)+1,:,:);

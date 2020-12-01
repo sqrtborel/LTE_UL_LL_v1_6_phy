@@ -237,7 +237,7 @@ classdef TR36873_Fading_3D_Channel < handle
                 obj.Nfft =  2^ceil(log2(obj.Ntot));
             end
             obj.Tb = 1/obj.subcarrierSpacing;
-            obj.fs = obj.subcarrierSpacing*obj.Nfft;                                     
+            obj.fs = obj.subcarrierSpacing*obj.Nfft; 
         end
                  
            %% Generate LOS elevation and azimuth angles of arrival/departure 
@@ -675,7 +675,7 @@ classdef TR36873_Fading_3D_Channel < handle
                end
                zenith_angle_of_arrival_LOS         = zenith_angle_of_arrival_LOS_per_ray + repmat(cl_wise_alpha_LOS_el,1,length(zenith_angle_of_arrival_LOS)); 
                zenith_angle_of_arrival_LOS         = wrapTo360(zenith_angle_of_arrival_LOS);
-               % Check if ZOA angle values are within interval [180°,360°] and perform theta_ZOA = 360° - theta_ZOA
+               % Check if ZOA angle values are within interval [180?,360°] and perform theta_ZOA = 360? - theta_ZOA
                for i=1:length(zenith_angle_of_arrival_LOS)
                    for j=1:obj.NumClusters_LOS
                        if (zenith_angle_of_arrival_LOS(i,j)>=180) && (zenith_angle_of_arrival_LOS(i,j)<=360)
@@ -716,7 +716,7 @@ classdef TR36873_Fading_3D_Channel < handle
                end
                zenith_angle_of_arrival_NLOS          = zenith_angle_of_arrival_NLOS_per_ray + repmat(cl_wise_alpha_NLOS_el,1,length(zenith_angle_of_arrival_NLOS)); % Add offset angles per ray in each cluster
                zenith_angle_of_arrival_NLOS          = wrapTo360(zenith_angle_of_arrival_NLOS);
-               % Check if ZOA angle values are within interval [180°,360°] and perform theta_ZOA = 360° - theta_ZOA
+               % Check if ZOA angle values are within interval [180?,360°] and perform theta_ZOA = 360? - theta_ZOA
                for i=1:length(zenith_angle_of_arrival_NLOS)
                    for j=1:obj.NumClusters_NLOS
                        if (zenith_angle_of_arrival_NLOS(i,j)>=180) && (zenith_angle_of_arrival_NLOS(i,j)<=360)
@@ -763,7 +763,7 @@ classdef TR36873_Fading_3D_Channel < handle
                end
                zenith_angle_of_arrival_OTOI          = zenith_angle_of_arrival_OTOI_per_ray + repmat(cl_wise_alpha_OTOI_el,1,length(zenith_angle_of_arrival_OTOI)); % Add offset angles per ray in each cluster
                zenith_angle_of_arrival_OTOI          = wrapTo360(zenith_angle_of_arrival_OTOI);
-               % Check if ZOA angle values are within interval [180°,360°] and perform theta_ZOA = 360° - theta_ZOA
+               % Check if ZOA angle values are within interval [180?,360°] and perform theta_ZOA = 360? - theta_ZOA
                for i=1:length(zenith_angle_of_arrival_OTOI)
                    for j=1:obj.NumClusters_OTOI
                        if (zenith_angle_of_arrival_OTOI(i,j)>=180) && (zenith_angle_of_arrival_OTOI(i,j)<=360)
@@ -801,7 +801,7 @@ classdef TR36873_Fading_3D_Channel < handle
                rand_factor_add_el                      = (2.*round(rand(1,length(zenith_angle_of_departure_LOS)))-1).*zenith_angle_of_departure_LOS+ ...
                                                          normrnd(0,sigmas_ZSD_LOS/7,1,length(zenith_angle_of_departure_LOS));                                 
                                                                                                                              
-               zenith_angle_of_departure_LOS           = rand_factor_add_el - rand_factor_add_el(1) + obj.theta_departure(pp) + ZS_D_mu_offset_LOS; %deifne_angle changes for indoor 90°  %LOS case equation 7.11 
+               zenith_angle_of_departure_LOS           = rand_factor_add_el - rand_factor_add_el(1) + obj.theta_departure(pp) + ZS_D_mu_offset_LOS; %deifne_angle changes for indoor 90?  %LOS case equation 7.11 
                zenith_angle_of_departure_LOS_per_ray   = repmat(zenith_angle_of_departure_LOS,obj.PerClusterRays,1);                
                sign_offset                             = ones(obj.PerClusterRays,1);
                sign_offset(2:2:length(sign_offset))    = -1;
@@ -813,7 +813,7 @@ classdef TR36873_Fading_3D_Channel < handle
                
                zenith_angle_of_departure_LOS           = zenith_angle_of_departure_LOS_per_ray + repmat(cl_wise_alpha_LOS_el,1,length(zenith_angle_of_departure_LOS));   
                zenith_angle_of_departure_LOS           = wrapTo360(zenith_angle_of_departure_LOS);
-               % Check if ZOA angle values are within interval [180°,360°] and perform theta_ZOA = 360° - theta_ZOA
+               % Check if ZOA angle values are within interval [180?,360°] and perform theta_ZOA = 360? - theta_ZOA
                for i=1:length(zenith_angle_of_departure_LOS)
                    for j=1:obj.NumClusters_LOS
                        if (zenith_angle_of_departure_LOS(i,j)>=180) && (zenith_angle_of_departure_LOS(i,j)<=360)
@@ -859,7 +859,7 @@ classdef TR36873_Fading_3D_Channel < handle
                end
                zenith_angle_of_departure_NLOS         = zenith_angle_of_departure_NLOS_per_ray + repmat(cl_wise_alpha_NLOS_el,1,length(zenith_angle_of_departure_NLOS));       
                zenith_angle_of_departure_NLOS         = wrapTo360(zenith_angle_of_departure_NLOS);
-               % Check if ZOD angle values are within interval [180°,360°] and perform theta_ZOD = 360° - theta_ZOD
+               % Check if ZOD angle values are within interval [180?,360°] and perform theta_ZOD = 360? - theta_ZOD
                for i=1:length(zenith_angle_of_departure_NLOS)
                    for j=1:obj.NumClusters_NLOS
                        if (zenith_angle_of_departure_NLOS(i,j)>=180) && (zenith_angle_of_departure_NLOS(i,j)<=360)
@@ -903,7 +903,7 @@ classdef TR36873_Fading_3D_Channel < handle
                end
                zenith_angle_of_departure_OTOI         = zenith_angle_of_departure_OTOI_per_ray + repmat(cl_wise_alpha_OTOI_el,1,length(zenith_angle_of_departure_OTOI));       
                zenith_angle_of_departure_OTOI         = wrapTo360(zenith_angle_of_departure_OTOI);
-               % Check if ZOD angle values are within interval [180°,360°] and perform theta_ZOD = 360° - theta_ZOD
+               % Check if ZOD angle values are within interval [180?,360°] and perform theta_ZOD = 360? - theta_ZOD
                for i=1:length(zenith_angle_of_departure_OTOI)
                    for j=1:obj.NumClusters_OTOI
                        if (zenith_angle_of_departure_OTOI(i,j)>=180) && (zenith_angle_of_departure_OTOI(i,j)<=360)
@@ -1074,7 +1074,7 @@ classdef TR36873_Fading_3D_Channel < handle
                %
                % (c) Fjolla Ademaj, Martin Taranetz, ITC, 2016  
                initial_phases_LOS = 360*rand(obj.PerClusterRays,obj.NumClusters_LOS,4);               
-               initial_phases_LOS = wrapTo180(initial_phases_LOS);    % Wrap angles from interval [0°,360°] to [-180°,180°]
+               initial_phases_LOS = wrapTo180(initial_phases_LOS);    % Wrap angles from interval [0?,360°] to [-180?,180°]
            end
            
            function initial_phases_NLOS  = generate_initial_phases_NLOS(obj)
@@ -1122,7 +1122,7 @@ classdef TR36873_Fading_3D_Channel < handle
                %
                % (c) Fjolla Ademaj, Martin Taranetz, ITC, 2016
                initial_phases_LOS_direct_ray = 360*rand(1,2);                                        
-               initial_phases_LOS_direct_ray = wrapTo180(initial_phases_LOS_direct_ray);  % Wrap angles from interval [0°,360°] to [-180°,180°]
+               initial_phases_LOS_direct_ray = wrapTo180(initial_phases_LOS_direct_ray);  % Wrap angles from interval [0?,360°] to [-180?,180°]
            end
                     
            %% Generate spherical unit vectors with azimuth/elevation arrival
@@ -1405,10 +1405,10 @@ classdef TR36873_Fading_3D_Channel < handle
                %
                % input:                        theta_antenna_field_tx_LOS        ... polarized antenna element field pattern in zenith in LCS
                %                               phi_antenna_field_tx_LOS          ... polarized antenna element field pattern in azimuth in LCS
-               %                               bearing_angle                     ... pointing direction of antenna relative to x axis (0° in +x direction) used for rotation 
-               %                               mechanical_downtilt               ... direction of antenna element relative to the y axis (0° in +y direction) used for rotation 
-               %                               mechanical_slant                  ... direction of antenna element relative to the z axis (0° in +z direction) used for rotation 
-               %                               slant_angle                       ... the angle of slanted antenna element relative to the z axis (0° in +z direction) 
+               %                               bearing_angle                     ... pointing direction of antenna relative to x axis (0? in +x direction) used for rotation 
+               %                               mechanical_downtilt               ... direction of antenna element relative to the y axis (0? in +y direction) used for rotation 
+               %                               mechanical_slant                  ... direction of antenna element relative to the z axis (0? in +z direction) used for rotation 
+               %                               slant_angle                       ... the angle of slanted antenna element relative to the z axis (0? in +z direction) 
                %                                                                     depends on the plarization mode (defined in the config)
                %
                % output:                       theta_AntennaField_tx_global_LOS  ... polarized antenna element field pattern in zenith in GCS
@@ -1416,7 +1416,7 @@ classdef TR36873_Fading_3D_Channel < handle
                %
                % (c) Fjolla Ademaj, Martin Taranetz, ITC, 2016
                bearing_angle = obj.BS_boresight;% sector boresight angle with respect to x-axis 
-               mechanical_downtilt = LTE_config.mechanical_downtilt; % mechanical downtilt between 0° and 180°
+               mechanical_downtilt = LTE_config.mechanical_downtilt; % mechanical downtilt between 0? and 180?
                mechanical_slant = LTE_config.mechanical_slant; %mechanical slant angle assumed to be zero
                
                % Psi angle as a functio of mechanical orienation Eq. 5.13
@@ -1453,10 +1453,10 @@ classdef TR36873_Fading_3D_Channel < handle
                %
                % input:                        theta_antenna_field_tx_NLOS        ... polarized antenna element field pattern in zenith in LCS
                %                               phi_antenna_field_tx_NLOS          ... polarized antenna element field pattern in azimuth in LCS
-               %                               bearing_angle                      ... pointing direction of antenna relative to x axis (0° in +x direction)
-               %                               mechanical_downtilt                ... direction of antenna element relative to the y axis (0° in +y direction) 
-               %                               mechanical_slant                  ... direction of antenna element relative to the z axis (0° in +z direction) used for rotation 
-               %                               slant_angle                        ... the angle of slanted antenna element relative to the z axis (0° in +z direction) 
+               %                               bearing_angle                      ... pointing direction of antenna relative to x axis (0? in +x direction)
+               %                               mechanical_downtilt                ... direction of antenna element relative to the y axis (0? in +y direction) 
+               %                               mechanical_slant                  ... direction of antenna element relative to the z axis (0? in +z direction) used for rotation 
+               %                               slant_angle                        ... the angle of slanted antenna element relative to the z axis (0? in +z direction) 
                %                                                                      depends on the plarization mode (defined in the config)
                %
                % output:                       theta_AntennaField_tx_global_NLOS   ... polarized antenna element field pattern in zenith in GCS
@@ -1464,7 +1464,7 @@ classdef TR36873_Fading_3D_Channel < handle
                %
                % (c) Fjolla Ademaj, Martin Taranetz, ITC, 2016
                bearing_angle = obj.BS_boresight;% sector boresight angle with respect to x-axis 
-               mechanical_downtilt = LTE_config.mechanical_downtilt; % mechanical downtilt between 0° and 180°
+               mechanical_downtilt = LTE_config.mechanical_downtilt; % mechanical downtilt between 0? and 180?
                mechanical_slant = LTE_config.mechanical_slant; %mechanical slant angle assumed to be zero
                
                psi_angle_NLOS = angle(sind(mechanical_slant).*cosd(obj.zenith_angle_of_departure_NLOS_once(:,:,pp)).*sind(obj.azimuth_angle_of_departure_NLOS_once(:,:,pp) - bearing_angle)+...
@@ -1498,10 +1498,10 @@ classdef TR36873_Fading_3D_Channel < handle
                %
                % input:                        theta_antenna_field_tx_OTOI        ... polarized antenna element field pattern in zenith in LCS
                %                               phi_antenna_field_tx_OTOI          ... polarized antenna element field pattern in azimuth in LCS
-               %                               bearing_angle                      ... pointing direction of antenna relative to x axis (0° in +x direction)
-               %                               mechanical_downtilt                ... direction of antenna element relative to the y axis (0° in +y direction)  
-               %                               mechanical_slant                  ... direction of antenna element relative to the z axis (0° in +z direction) used for rotation 
-               %                               slant_angle                        ... the angle of slanted antenna element relative to the z axis (0° in +z direction) 
+               %                               bearing_angle                      ... pointing direction of antenna relative to x axis (0? in +x direction)
+               %                               mechanical_downtilt                ... direction of antenna element relative to the y axis (0? in +y direction)  
+               %                               mechanical_slant                  ... direction of antenna element relative to the z axis (0? in +z direction) used for rotation 
+               %                               slant_angle                        ... the angle of slanted antenna element relative to the z axis (0? in +z direction) 
                %                                                                      depends on the plarization mode (defined in the config)
                %
                % output:                       theta_AntennaField_tx_global_OTOI  ... polarized antenna element field pattern in zenith in GCS
@@ -1509,7 +1509,7 @@ classdef TR36873_Fading_3D_Channel < handle
                %
                % (c) Fjolla Ademaj, Martin Taranetz, ITC, 2016
                bearing_angle = obj.BS_boresight;% sector boresight angle with respect to x-axis 
-               mechanical_downtilt = LTE_config.mechanical_downtilt; % mechanical downtilt between 0° and 180°
+               mechanical_downtilt = LTE_config.mechanical_downtilt; % mechanical downtilt between 0? and 180?
                mechanical_slant = LTE_config.mechanical_slant; %mechanical slant angle assumed to be zero
                
                psi_angle_OTOI = angle(sind(mechanical_slant).*cosd(obj.zenith_angle_of_departure_OTOI_once(:,:,pp)).*sind(obj.azimuth_angle_of_departure_OTOI_once(:,:,pp) - bearing_angle)+...
@@ -1545,10 +1545,10 @@ classdef TR36873_Fading_3D_Channel < handle
                %
                % input:                   theta_antenna_field_tx_LOS_direct_ray ... polarized antenna element field pattern in zenith in LCS
                %                          phi_antenna_field_tx_LOS_direct_ray   ... polarized antenna element field pattern in azimuth in LCS
-               %                          bearing_angle                         ... pointing direction of antenna relative to x axis (0° in +x direction)
-               %                          mechanical_downtilt                   ... direction of antenna element relative to the y axis (0° in +y direction)  
-               %                          mechanical_slant                      ... direction of antenna element relative to the z axis (0° in +z direction) used for rotation
-               %                          slant_angle                           ... the angle of slanted antenna element relative to the z axis (0° in +z direction) 
+               %                          bearing_angle                         ... pointing direction of antenna relative to x axis (0? in +x direction)
+               %                          mechanical_downtilt                   ... direction of antenna element relative to the y axis (0? in +y direction)  
+               %                          mechanical_slant                      ... direction of antenna element relative to the z axis (0? in +z direction) used for rotation
+               %                          slant_angle                           ... the angle of slanted antenna element relative to the z axis (0? in +z direction) 
                %                                                                    depends on the plarization mode (defined in the config)
                %
                % output:                  theta_AntennaField_tx_global_LOS_direct_ray ... polarized antenna element field pattern in zenith in GCS
@@ -1556,7 +1556,7 @@ classdef TR36873_Fading_3D_Channel < handle
                %
                % (c) Fjolla Ademaj, Martin Taranetz, ITC, 2016
                bearing_angle = obj.BS_boresight;% sector boresight angle with respect to x-axis 
-               mechanical_downtilt = LTE_config.mechanical_downtilt; % mechanical downtilt between 0° and 180°
+               mechanical_downtilt = LTE_config.mechanical_downtilt; % mechanical downtilt between 0? and 180?
                mechanical_slant = LTE_config.mechanical_slant; %mechanical slant angle assumed to be zero
                
                psi_angle_LOS_direct_ray = angle(sind(mechanical_slant)*cosd(obj.theta_departure(pp))*sind(obj.phi_departure(pp) - bearing_angle)+...
@@ -1591,18 +1591,18 @@ classdef TR36873_Fading_3D_Channel < handle
                %
                % input:                        UE_theta_antenna_field_LOS        ... user polarized antenna element field pattern in zenith in LCS
                %                               UE_phi_antenna_field_LOS          ... user polarized antenna element field pattern in azimuth in LCS
-               %                               bearing_angle                     ... pointing direction of antenna at user relative to x axis (0° in +x direction)
-               %                                                                     a random angle uniformly distributed between 0° and 360°
-               %                               mechanical_downtilt               ... direction of antenna element relative to the y axis (0° in +y direction)   
-               %                               mechanical_slant                  ... direction of antenna element relative to the z axis (0° in +z direction) 
-               %                               UE_slant_angle                    ... the angle of slanted antenna element at user relative to the z axis (0° in +z direction) 
+               %                               bearing_angle                     ... pointing direction of antenna at user relative to x axis (0? in +x direction)
+               %                                                                     a random angle uniformly distributed between 0? and 360?
+               %                               mechanical_downtilt               ... direction of antenna element relative to the y axis (0? in +y direction)   
+               %                               mechanical_slant                  ... direction of antenna element relative to the z axis (0? in +z direction) 
+               %                               UE_slant_angle                    ... the angle of slanted antenna element at user relative to the z axis (0? in +z direction) 
                %                                                                     depends on the plarization mode (defined in the config)
                %
                % output:                       UE_theta_AntennaField_global_LOS  ... user polarized antenna element field pattern in zenith in GCS
                %                               UE_phi_AntennaField_global_LOS    ... user polarized antenna element field pattern in azimuth in GCS
                %
                % (c) Fjolla Ademaj, Martin Taranetz, ITC, 2016
-               bearing_angle = direction_of_movement; % random angle uniformly distributed between 0° and 360°
+               bearing_angle = direction_of_movement; % random angle uniformly distributed between 0? and 360?
                mechanical_downtilt = 90; % downtilt with respect to y-axis
                mechanical_slant    = 0; % 3GPP TR 36.873 Table 8.2-2
 
@@ -1640,18 +1640,18 @@ classdef TR36873_Fading_3D_Channel < handle
                %
                % input:                        UE_theta_antenna_field_NLOS        ... user polarized antenna element field pattern in zenith in LCS
                %                               UE_phi_antenna_field_NLOS          ... user polarized antenna element field pattern in azimuth in LCS
-               %                               bearing_angle                     ... pointing direction of antenna at user relative to x axis (0° in +x direction)
-               %                                                                      a random angle uniformly distributed between 0° and 360°
-               %                               mechanical_downtilt               ... direction of antenna element relative to the y axis (0° in +y direction)   
-               %                               mechanical_slant                  ... direction of antenna element relative to the z axis (0° in +z direction) 
-               %                               UE_slant_angle                    ... the angle of slanted antenna element at user relative to the z axis (0° in +z direction) 
+               %                               bearing_angle                     ... pointing direction of antenna at user relative to x axis (0? in +x direction)
+               %                                                                      a random angle uniformly distributed between 0? and 360?
+               %                               mechanical_downtilt               ... direction of antenna element relative to the y axis (0? in +y direction)   
+               %                               mechanical_slant                  ... direction of antenna element relative to the z axis (0? in +z direction) 
+               %                               UE_slant_angle                    ... the angle of slanted antenna element at user relative to the z axis (0? in +z direction) 
                %                                                                     depends on the plarization mode (defined in the config)
                %
                % output:                       UE_theta_AntennaField_global_NLOS  ... user polarized antenna element field pattern in zenith in GCS
                %                               UE_phi_AntennaField_global_NLOS    ... user polarized antenna element field pattern in azimuth in GCS
                %
                % (c) Fjolla Ademaj, Martin Taranetz, ITC, 2016
-               bearing_angle = direction_of_movement; % random angle uniformly distributed between 0° and 360°
+               bearing_angle = direction_of_movement; % random angle uniformly distributed between 0? and 360?
                mechanical_downtilt = 90; % downtilt with respect to y-axis
                mechanical_slant    = 0; % 3GPP TR 36.873 Table 8.2-2
                 
@@ -1688,18 +1688,18 @@ classdef TR36873_Fading_3D_Channel < handle
                %
                % input:                        UE_theta_antenna_field_OTOI        ... user polarized antenna element field pattern in zenith in LCS
                %                               UE_phi_antenna_field_OTOI          ... user polarized antenna element field pattern in azimuth in LCS
-               %                               bearing_angle                     ... pointing direction of antenna at user relative to x axis (0° in +x direction)
-               %                                                                      a random angle uniformly distributed between 0° and 360°
-               %                               mechanical_downtilt               ... direction of antenna element relative to the y axis (0° in +y direction)
-               %                               mechanical_slant                  ... direction of antenna element relative to the z axis (0° in +z direction)
-               %                               UE_slant_angle                    ... the angle of slanted antenna element at user relative to the z axis (0° in +z direction) 
+               %                               bearing_angle                     ... pointing direction of antenna at user relative to x axis (0? in +x direction)
+               %                                                                      a random angle uniformly distributed between 0? and 360?
+               %                               mechanical_downtilt               ... direction of antenna element relative to the y axis (0? in +y direction)
+               %                               mechanical_slant                  ... direction of antenna element relative to the z axis (0? in +z direction)
+               %                               UE_slant_angle                    ... the angle of slanted antenna element at user relative to the z axis (0? in +z direction) 
                %                                                                     depends on the plarization mode (defined in the config)
                %
                % output:                       UE_theta_AntennaField_global_OTOI  ... user polarized antenna element field pattern in zenith in GCS
                %                               UE_phi_AntennaField_global_OTOI    ... user polarized antenna element field pattern in azimuth in GCS
                %
                % (c) Fjolla Ademaj, Martin Taranetz, ITC, 2016
-                bearing_angle = direction_of_movement; % random angle uniformly distributed between 0° and 360°
+                bearing_angle = direction_of_movement; % random angle uniformly distributed between 0? and 360?
                 mechanical_downtilt = 90; % downtilt with respect to y-axis
                 mechanical_slant    = 0; % 3GPP TR 36.873 Table 8.2-2
                  
@@ -1736,18 +1736,18 @@ classdef TR36873_Fading_3D_Channel < handle
                %
                % input:           UE_theta_AntennaField_global_LOS_direct_ray  ... user polarized antenna element field pattern in zenith in LCS
                %                  UE_phi_AntennaField_global_LOS_direct_ray    ... user polarized antenna element field pattern in azimuth in LCS
-               %                  bearing_angle                                ... pointing direction of antenna at user relative to x axis (0° in +x direction)
-               %                                                                   a random angle uniformly distributed between 0° and 360°
-               %                  mechanical_downtilt                          ... direction of antenna element relative to the y axis (0° in +y direction)   
-               %                  mechanical_slant                             ... direction of antenna element relative to the z axis (0° in +z direction)
-               %                  UE_slant_angle                               ... the angle of slanted antenna element at user relative to the z axis (0° in +z direction) 
+               %                  bearing_angle                                ... pointing direction of antenna at user relative to x axis (0? in +x direction)
+               %                                                                   a random angle uniformly distributed between 0? and 360?
+               %                  mechanical_downtilt                          ... direction of antenna element relative to the y axis (0? in +y direction)   
+               %                  mechanical_slant                             ... direction of antenna element relative to the z axis (0? in +z direction)
+               %                  UE_slant_angle                               ... the angle of slanted antenna element at user relative to the z axis (0? in +z direction) 
                %                                                                     depends on the plarization mode (defined in the config)
                %
                % output:          UE_theta_AntennaField_global_LOS_direct_ray  ... user polarized antenna element field pattern in zenith in GCS
                %                  UE_phi_AntennaField_global_LOS_direct_ray    ... user polarized antenna element field pattern in azimuth in GCS
                %
                % (c) Fjolla Ademaj, Martin Taranetz, ITC, 2016
-               bearing_angle = direction_of_movement; % random angle uniformly distributed between 0° and 360°
+               bearing_angle = direction_of_movement; % random angle uniformly distributed between 0? and 360?
                mechanical_downtilt = 90; % downtilt with respect to y-axis
                mechanical_slant    = 0; % 3GPP TR 36.873 Table 8.2-2
  
@@ -2454,12 +2454,14 @@ classdef TR36873_Fading_3D_Channel < handle
            %% FFT over the sampled channel coefficients
            
            function H_fft_RB = get_RB_trace(obj, channel)
+%                disp(['Nfft = ',num2str(obj.Nfft),'; Ntot = ',num2str(obj.Ntot),'; sample = ',num2str(obj.FFT_sampling_interval)])
                % Returns back a frequency channel trace jumping each FFT_sampling_interval subcarriers
                H_fft_large = fft(channel,obj.Nfft,5);
+               H_fft_RB = H_fft_large(:,:,:,:,[1:24]);
                % Eliminate guardband
-               H_fft       = H_fft_large(:,:,:,:,[obj.Nfft-obj.Ntot/2+1:obj.Nfft 2:obj.Ntot/2+1]);
+%                H_fft       = H_fft_large(:,:,:,:,[obj.Nfft-obj.Ntot/2+1:obj.Nfft 2:obj.Ntot/2+1]);
                % Do not return the channel for all subcarriers, but just a subset of it
-               H_fft_RB    = H_fft(:,:,:,:,1:obj.FFT_sampling_interval:end);
+%                H_fft_RB    = H_fft(:,:,:,:,1:obj.FFT_sampling_interval:end);
            end
 
            

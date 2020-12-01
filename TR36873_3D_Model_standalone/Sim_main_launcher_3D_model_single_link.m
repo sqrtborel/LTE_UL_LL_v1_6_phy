@@ -17,6 +17,7 @@ config.parallel_network = false;
 % * eNodeB antenna parameters
 % * Load specific channel model parameters from Table 7.3-6 and system parameters for the FFT of the channel impulse response
 
+config.generate_uplink = true;
 
 % Basic settings
 config.frequency            = 2e9;
@@ -67,7 +68,7 @@ config.antenna.max_antenna_gain                      = 8; % As defined in TR 36.
 % parameters for the FFT of the channel impulse response
 config = load_specific_params_link_level(config);
 
-config.simulation_time_blocks                         = 100; % Design parameter: the simulation length as multiple of Block Fading length (config.BF_length)
+config.simulation_time_blocks                         = 10; % Design parameter: the simulation length as multiple of Block Fading length (config.BF_length)
 config.results_folder                                 = './results';
 config.results_file                                   = 'auto'; %NOTE: 'auto' assigns a filename automatically
 
@@ -131,7 +132,7 @@ UEs.H_0_channel_trace   = [];  % denotes the channel impulse response from the c
 UEs.sampled_channel_H_0 = [];  % denotes the sampled channel impulse response
 UEs.H_0_final           = [];  % denotes the channel transfer function after the FFT
 eNodeBs.attachUser(UEs);
-UEs.is_indoor           = binornd(1,config.indoor_UE_fraction); % determines whether the UE is indoors or outdoors
+UEs.is_indoor           = 0; % determines whether the UE is indoors or outdoors
 UEs.dist_indoor         = UEs.is_indoor.*(25*rand); % generates the indoor distance from the UE position to the outer wall of the building where the UE located
 indoor_UE_height            = 3*(randi(randi([config.min_floor_number,config.max_floor_number])) - 1) + 1.5; % the height for an indoor UE as specified in the standard
 UEs.rx_height           = UEs.is_indoor.*indoor_UE_height + ~UEs.is_indoor.*1.5; % determines the UE height: if outdoor UE the default value is 1.5 as given in the standard

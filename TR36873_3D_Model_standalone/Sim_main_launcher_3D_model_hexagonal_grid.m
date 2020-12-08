@@ -33,7 +33,7 @@ config.CP_length            = 'normal';
 
 % User and eNodeB settings
 config.UE_per_eNodeB             = 5;
-config.UE_speed                  = 50/3.6; % m/s
+config.UE_speed                  = 3/3.6; % m/s
 config.eNodeB_tx_power           = 40;
 config.eNodeB_nTX                = 32;
 config.UE_nRX                    = 2;
@@ -87,7 +87,7 @@ config.antenna.max_antenna_gain                      = 8; % As defined in TR 36.
 % parameters for the FFT of the channel impulse response
 config = load_specific_params(config);
 
-config.simulation_time_blocks                        = 1;           % Design parameter: the simulation length as multiple of Block Fading length (config.BF_length)
+config.simulation_time_blocks                        = 5;           % Design parameter: the simulation length as multiple of Block Fading length (config.BF_length)
 config.results_folder                                = './results';
 config.results_file                                  = 'auto';       % NOTE: 'auto' assigns a filename automatically
 
@@ -105,8 +105,6 @@ else
     roi_y = [min(tx_pos(:,2)),max(tx_pos(:,2))];
     roi_x = roi_x + ROI_increase_factor*abs(roi_x(2)-roi_x(1))*[-1,1];
     roi_y = roi_y + ROI_increase_factor*abs(roi_y(2)-roi_y(1))*[-1,1];
-%     roi_x = roi_x + ROI_increase_factor*abs(roi_x(2)-roi_x(1))*[-1,1];
-%     roi_y = roi_y + ROI_increase_factor*abs(roi_y(2)-roi_y(1))*[-1,1];
 end
 
 if config.show_network_plots
@@ -749,4 +747,4 @@ if strcmp(config.results_file,'auto')
         lab_ind,...                                 % Lab index (in order to avoid multiple labs writing to the same file)
         par_ID);                                    % ID of the current worker (for parallel simulations only)
 end
-save('-v7.3',fullfile(config.results_folder,results_filename),'config','networkPathlossMap','networkShadowFadingMap','UEs','eNodeBs','eNodeB_sites');
+% save('-v7.3',fullfile(config.results_folder,results_filename),'config','networkPathlossMap','networkShadowFadingMap','UEs','eNodeBs','eNodeB_sites');
